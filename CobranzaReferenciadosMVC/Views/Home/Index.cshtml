@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Principal";
+}
+
+<div class="jumbotron">
+    <h1>Recibos de Cobranza Referenciados</h1>
+    <p class="lead">
+        Aquí podrá administrar de manera automática sus recibos de cobranza.
+    </p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Subir Archivo de Texto</h2>
+        <p>
+            Suba un archivo de texto con los recibos de pago a la base de datos.
+        </p>
+        <p>
+            <a class="btn btn-success" href="@Url.Action("Index", "SubirArchivoTexto")">
+                <span class="fas fa-upload"></span>
+                Subir Nuevo Archivo
+            </a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Actualizar Referencia</h2>
+        <p>
+            Actualice la referencia de algún recibo de cobro sin validar.
+        </p>
+        <p>
+            <a class="btn btn-success" href="@Url.Action("Index", "ActualizarReferencia")">
+                <span class="fas fa-edit"></span>
+                Actualizar Referencia
+            </a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Exportar Recibos</h2>
+        <p>
+            Exporte los recibos en formato Excel.
+        </p>
+        <p>
+            <a class="btn btn-success" href="@Url.Action("Index", "ExportarRecibos")">
+                <span class="fas fa-file-excel"></span>
+                Exportar Recibos
+            </a>
+        </p>
+    </div>
+</div>

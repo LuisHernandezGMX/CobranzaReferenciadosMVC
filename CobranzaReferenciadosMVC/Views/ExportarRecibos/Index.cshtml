@@ -1,0 +1,151 @@
+﻿@using CobranzaReferenciadosMVC.Models.ViewModels.ExportarRecibos
+@model BuscarRecibosViewModel
+@{
+    ViewBag.Title = "Exportar Recibos";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Exportar Recibos</h1>
+        <hr>
+    </div>
+</div>
+<div class="row">
+    @using (Html.BeginForm("BuscarRecibosAExportar", "ExportarRecibos", FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+        <div class="col-sm-6">
+            <strong>Elija el rango de fechas:</strong>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div id="fechaInicialGroup" class="input-group date">
+                            @Html.TextBoxFor(model => model.FechaInicial, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fas fa-calendar-alt"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div id="fechaFinalGroup" class="input-group date">
+                            @Html.TextBoxFor(model => model.FechaFinal, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="fas fa-calendar-alt"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <strong>Elija qué tipo de recibos desea ver:</strong>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(model => model.TiposRecibo, (int)TiposRecibo.Validados, new { @checked = "" })
+                                Validados
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(model => model.TiposRecibo, (int)TiposRecibo.NoValidados)
+                                No Validados
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(model => model.TiposRecibo, (int)TiposRecibo.Todos)
+                                Todos
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span class="fas fa-search"></span>
+                        Buscar Recibos
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@if (IsPost) {
+    if (Model.RecibosAExportar == null || Model.RecibosAExportar.Count() == 0) {
+        <h4 class="text-info">No se encontraron resultados.</h4>
+    } else {
+        <div class="table-responsive">
+            <table id="tablaRecibos" class="table table-bordered table-condensed" style="font-size:8pt">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Referencia 1</th>
+                        <th>Referencia 2</th>
+                        <th>Monto</th>
+                        <th>Tipo de Movimiento</th>
+                        <th>Banco</th>
+                        <th>Leyenda</th>
+                        <th>FechaProceso</th>
+                        <th>Validado</th>
+                        <th>RFC</th>
+                        <th>CodRamoNroPol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var recibo in Model.RecibosAExportar) {
+                        <tr>
+                            <td>@recibo.Fecha</td>
+                            <td>@recibo.Referencia1</td>
+                            <td>@recibo.Referencia2</td>
+                            <td>$ @recibo.Monto</td>
+                            <td>@recibo.TipoMovimiento</td>
+                            <td>@recibo.Banco</td>
+                            <td>@recibo.Leyenda</td>
+                            <td>@recibo.FechaProceso</td>
+                            <td>@recibo.Validado</td>
+                            <td>@recibo.RFC</td>
+                            <td>@recibo.CodRamoNroPol</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Referencia 1</th>
+                        <th>Referencia 2</th>
+                        <th>Monto</th>
+                        <th>Tipo de Movimiento</th>
+                        <th>Banco</th>
+                        <th>Leyenda</th>
+                        <th>FechaProceso</th>
+                        <th>Validado</th>
+                        <th>RFC</th>
+                        <th>CodRamoNroPol</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+}
+
+@section Styles {
+    @Styles.Render("~/Content/ExportarRecibos")
+    <style>
+        .input-group-addon {
+            width: 13%;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        var IS_POST = @(IsPost ? "true" : "false");
+        var DATATABLES_SPANISH_LANG = '@(IsPost ? Url.Content("~/Scripts/datatables-spanish-i18n.json") : "")';
+    </script>
+    @Scripts.Render("~/bundles/ExportarRecibos/Index")
+}

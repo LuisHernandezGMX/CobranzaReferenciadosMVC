@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SCVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Poliza_Factura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cod_ramo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RFC" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="nro_pol" Type="int" Nullable="false" />
+          <Property Name="ID_RUV" Type="int" Nullable="false" />
+          <Property Name="ID_SII" Type="int" Nullable="false" />
+          <Property Name="TipoPoliza" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReciboPago">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Referencia1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Referencia2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Monto" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TipoMovimiento" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Banco" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Leyenda" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="FechaProceso" Type="datetime" Nullable="false" />
+          <Property Name="Validado" Type="bit" Nullable="false" />
+          <Property Name="RFC" Type="varchar" MaxLength="15" />
+          <Property Name="CodRamoNroPol" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Referencia_Fovi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_asig" Type="int" Nullable="false" />
+          <Property Name="Prima_neta" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="No_Referencia" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Estatus_Pago" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Date_Reg" Type="datetime" Nullable="false" />
+          <Property Name="User_Reg" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="User_Pago" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_Pago" Type="datetime" />
+        </EntityType>
+        <Function Name="CalcularPrimaTotalPorReferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Referencia" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdPagoReferenFoviDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Referencia" Type="varchar" Mode="In" />
+          <Parameter Name="UserPago" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha" Type="datetime" Mode="In" />
+        </Function>
+        <EntityContainer Name="SCVModelStoreContainer">
+          <EntitySet Name="Poliza_Factura" EntityType="Self.Poliza_Factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReciboPago" EntityType="Self.ReciboPago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Referencia_Fovi" EntityType="Self.Referencia_Fovi" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SCVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Poliza_Factura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cod_ramo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RFC" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nro_pol" Type="Int32" Nullable="false" />
+          <Property Name="ID_RUV" Type="Int32" Nullable="false" />
+          <Property Name="ID_SII" Type="Int32" Nullable="false" />
+          <Property Name="TipoPoliza" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ReciboPago">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Referencia1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Referencia2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Monto" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TipoMovimiento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Banco" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Leyenda" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaProceso" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Validado" Type="Boolean" Nullable="false" />
+          <Property Name="RFC" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CodRamoNroPol" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Referencia_Fovi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_asig" Type="Int32" Nullable="false" />
+          <Property Name="Prima_neta" Type="Decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="No_Referencia" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estatus_Pago" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date_Reg" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="User_Reg" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="User_Pago" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_Pago" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="SCVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Poliza_Factura" EntityType="Self.Poliza_Factura" />
+          <EntitySet Name="ReciboPago" EntityType="Self.ReciboPago" />
+          <EntitySet Name="Referencia_Fovi" EntityType="Self.Referencia_Fovi" />
+          <FunctionImport Name="CalcularPrimaTotalPorReferencia" ReturnType="Collection(SCVModel.ReferenciaPrimaTotal)">
+          <Parameter Name="Referencia" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdPagoReferenFoviDate">
+            <Parameter Name="Referencia" Mode="In" Type="String" />
+            <Parameter Name="UserPago" Mode="In" Type="String" />
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="ReferenciaPrimaTotal">
+          <Property Type="String" Name="NoReferencia" Nullable="false" MaxLength="20" />
+          <Property Type="Decimal" Name="PrimaTotal" Nullable="true" Precision="38" Scale="4" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SCVModelStoreContainer" CdmEntityContainer="SCVEntities">
+          <EntitySetMapping Name="Poliza_Factura">
+            <EntityTypeMapping TypeName="SCVModel.Poliza_Factura">
+              <MappingFragment StoreEntitySet="Poliza_Factura">
+                <ScalarProperty Name="TipoPoliza" ColumnName="TipoPoliza" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Cod_ramo" ColumnName="Cod_ramo" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
+                <ScalarProperty Name="nro_pol" ColumnName="nro_pol" />
+                <ScalarProperty Name="ID_RUV" ColumnName="ID_RUV" />
+                <ScalarProperty Name="ID_SII" ColumnName="ID_SII" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReciboPago">
+            <EntityTypeMapping TypeName="SCVModel.ReciboPago">
+              <MappingFragment StoreEntitySet="ReciboPago">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Referencia1" ColumnName="Referencia1" />
+                <ScalarProperty Name="Referencia2" ColumnName="Referencia2" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
+                <ScalarProperty Name="Banco" ColumnName="Banco" />
+                <ScalarProperty Name="Leyenda" ColumnName="Leyenda" />
+                <ScalarProperty Name="FechaProceso" ColumnName="FechaProceso" />
+                <ScalarProperty Name="Validado" ColumnName="Validado" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
+                <ScalarProperty Name="CodRamoNroPol" ColumnName="CodRamoNroPol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Referencia_Fovi">
+            <EntityTypeMapping TypeName="SCVModel.Referencia_Fovi">
+              <MappingFragment StoreEntitySet="Referencia_Fovi">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_asig" ColumnName="Id_asig" />
+                <ScalarProperty Name="Prima_neta" ColumnName="Prima_neta" />
+                <ScalarProperty Name="No_Referencia" ColumnName="No_Referencia" />
+                <ScalarProperty Name="Estatus_Pago" ColumnName="Estatus_Pago" />
+                <ScalarProperty Name="Date_Reg" ColumnName="Date_Reg" />
+                <ScalarProperty Name="User_Reg" ColumnName="User_Reg" />
+                <ScalarProperty Name="User_Pago" ColumnName="User_Pago" />
+                <ScalarProperty Name="fecha_Pago" ColumnName="fecha_Pago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CalcularPrimaTotalPorReferencia" FunctionName="SCVModel.Store.CalcularPrimaTotalPorReferencia">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCVModel.ReferenciaPrimaTotal">
+                <ScalarProperty Name="NoReferencia" ColumnName="NoReferencia" />
+                <ScalarProperty Name="PrimaTotal" ColumnName="PrimaTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdPagoReferenFoviDate" FunctionName="SCVModel.Store.UpdPagoReferenFoviDate" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

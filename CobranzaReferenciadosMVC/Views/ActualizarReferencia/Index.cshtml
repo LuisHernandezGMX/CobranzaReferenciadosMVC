@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ReciboPago>
+@{
+    ViewBag.Title = "Actualizar Referencia";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Actualizar Referencia</h1>
+        <hr>
+        <p>Estos son los registros que aún no han sido validados:</p>
+        @if (Model.Count() > 0) {
+            <button id="btnActualizarReferencia" class="btn btn-primary pull-right">
+                <span class="fas fa-edit"></span>
+                Actualizar Referencia
+            </button>
+            <br><br><br>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        @if (Model.Count() == 0) {
+            <h3 class="text-info">
+                No hay registros sin validar por el momento.
+            </h3>
+        } else {
+            @Html.AntiForgeryToken()
+            <table id="tableRegistros" class="table table-hover table-striped table-bordered table-condensed" style="font-size:8pt">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha del Recibo</th>
+                        <th>Referencia 1</th>
+                        <th>Referencia 2</th>
+                        <th>Monto</th>
+                        <th>Tipo de Movimiento</th>
+                        <th>Banco</th>
+                        <th>Leyenda</th>
+                        <th>Fecha de Procesamiento</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaRegistrosBody">
+                    @foreach (var recibo in Model) {
+                        <tr style="cursor:pointer">
+                            <td>@recibo.Id</td>
+                            <td>@recibo.Fecha.ToShortDateString()</td>
+                            <td>@recibo.Referencia1</td>
+                            <td>@recibo.Referencia2</td>
+                            <td>$ @recibo.Monto</td>
+                            <td>@recibo.TipoMovimiento</td>
+                            <td>@recibo.Banco</td>
+                            <td>@recibo.Leyenda</td>
+                            <td>@recibo.FechaProceso</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha del Recibo</th>
+                        <th>Referencia 1</th>
+                        <th>Referencia 2</th>
+                        <th>Monto</th>
+                        <th>Tipo de Movimiento</th>
+                        <th>Banco</th>
+                        <th>Leyenda</th>
+                        <th>Fecha de Procesamiento</th>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+    </div>
+</div>
+
+@section Styles{
+    @Styles.Render("~/Content/ActualizarReferencia/Index")
+}
+
+@section Scripts{
+    @if (Model.Count() > 0) {
+        <script>
+            var DATATABLES_SPANISH_LANG = '@Url.Content("~/Scripts/datatables-spanish-i18n.json")';
+            var RUTA_NUEVA_REFERENCIA = "@Url.Action("NuevaReferencia", "ActualizarReferencia")";
+        </script>
+        @Scripts.Render("~/bundles/ActualizarReferencia/Index")
+    }
+}
