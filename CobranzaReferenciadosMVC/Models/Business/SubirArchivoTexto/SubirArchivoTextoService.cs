@@ -45,33 +45,10 @@ namespace CobranzaReferenciadosMVC.Models.Business.SubirArchivoTexto
                         }
 
                     } while (linea != null);
-
-                    /* MODIFICACIÓN (10/10/2018)
-                     * 
-                     *  
-                    while ((linea = reader.ReadLine()) != null) {
-                        lineas.Add(linea);
-                    }
-
-                    MODIFICACIÓN */
                 }
             }
 
             return lineas.Select(linea => ParseLinea(linea));
-
-            /* MODIFICACIÓN (10/10/2018): Debido a que el formato
-             * de los recibos de pago cambió a partir de esta fecha,
-             * el parsing también cambiará. El código debajo es el código
-             * que se utilizaba para analizar los recibos de pago antes de
-             * la fecha mencionada. No modificar, ya que el formato de los
-             * recibos podría cambiar nuevamente sin previo aviso. 
-
-            // Siempre se omite la última línea
-            lineas.RemoveAt(lineas.Count() - 1);
-
-            return lineas.Select(linea => ParseLinea(linea));
-
-            MODIFICACIÓN  */
         }
 
         /// <summary>
@@ -82,34 +59,43 @@ namespace CobranzaReferenciadosMVC.Models.Business.SubirArchivoTexto
         /// <returns></returns>
         private RegistroViewModel ParseLinea(string linea)
         {
-            /*  MODIFICACIÓN (10/10/2018)
-             * 
             var campos = linea.Split('\t');
 
-            return new RegistroViewModel {
+            return LeerRegistro(campos);
+        }
+
+        /// <summary>
+        /// Lee los campos del registro leído y regresa un objeto
+        /// con sus campos correspondientes, aplicando las reglas necesarias para
+        /// procesar la segunda referencia, el banco y la leyenda.
+        /// </summary>
+        /// <param name="campos">La línea leída del archivo separada en sus campos correspondientes.</param>
+        /// <returns>Un nuevo objecto RegistroViewModel.</returns>
+        private RegistroViewModel LeerRegistro(string[] campos)
+        {
+            var registro = new RegistroViewModel {
                 Fecha = DateTime.Parse(campos[4]),
-                Referencia1 = campos[5] ?? "",
-                Referencia2 = campos[10] ?? "",
+                Referencia1 = campos[5]?.Trim() ?? string.Empty,
                 Monto = decimal.Parse(campos[6]),
-                TipoMovimiento = campos[9] ?? "",
-                Banco = campos[11] ?? "",
-                Leyenda = campos[13] ?? ""
+                TipoMovimiento = campos[9]?.Trim() ?? string.Empty
             };
 
-            MODIFICACIÓN*/
+            if (registro.TipoMovimiento.Equals("TRANSFERENCIA INTERBANCARIA", StringComparison.InvariantCultureIgnoreCase)) {
+                registro.Referencia2 = campos[10]?.Trim() ?? string.Empty;
+                registro.Banco = campos[11]?.Trim() ?? string.Empty;
+                registro.Leyenda = campos[13]?.Trim() ?? string.Empty;
+            } else if (registro.TipoMovimiento.Equals("Deposito Efectivo", StringComparison.InvariantCultureIgnoreCase)) {
+                registro.Referencia2 = campos[10]?.Trim() ?? string.Empty;
+                registro.Banco = registro.Leyenda = string.Empty;
+            } else if (registro.TipoMovimiento.Equals("ABONO POR TRANSF SPEI", StringComparison.InvariantCultureIgnoreCase)) {
+                registro.Referencia2 = campos[11]?.Trim() ?? string.Empty;
+                registro.Banco = campos[10]?.Trim() ?? string.Empty;
+                registro.Leyenda = campos[13]?.Trim() ?? string.Empty;
+            } else {
+                registro.Referencia2 = registro.Banco = registro.Leyenda = string.Empty;
+            }
 
-            var campos = linea.Split('\t');
-
-            return new RegistroViewModel {
-                Fecha = DateTime.Parse(campos[4]),
-                Referencia1 = campos[3]?.Trim() ?? string.Empty,
-                Referencia2 = campos[5]?.Trim() ?? string.Empty,
-                Monto = decimal.Parse(campos[6]),
-                TipoMovimiento = campos[9]?.Trim() ?? string.Empty,
-                Banco = campos[10]?.Trim() ?? string.Empty,
-                Leyenda = campos[13]?.Trim() ?? string.Empty
-            };
-
+            return registro;
         }
     }
 
